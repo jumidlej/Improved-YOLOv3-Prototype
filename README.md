@@ -1,4 +1,4 @@
-# Protótipo Improved YOLOv3 para detecção de componentes eletrônicos PCBs
+# Protótipo Improved YOLOv3 para detecção de componentes eletrônicos em PCBs
 Artigo: Application Research of Improved YOLOv3 Algorithm in PCB Electronic Component Detection (2019)
 
 ## Dataset
