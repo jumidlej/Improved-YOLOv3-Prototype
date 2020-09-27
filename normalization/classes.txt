@@ -5,6 +5,7 @@ capacitor
 capacitor jumper
 clock
 connector
+connector Port
 diode
 diode zener array
 display
@@ -27,4 +28,5 @@ switch
 test point
 transformer
 transistor
+unknown
 zener diode

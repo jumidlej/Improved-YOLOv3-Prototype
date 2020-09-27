@@ -31,11 +31,14 @@ def pascal_to_yolo(yolo_path, pascal_path, images_name, components_dict, exclude
         for child in root.findall("object"):
             component_name = child[0].text
 
-            quotes = component_name.split('"')
-            if (len(quotes)>=3) and component_name[0]=='"':
-                component_name = quotes[1]
+            quotes = components[i].split('"')
+            if len(quotes)>=3 and quotes[0]=="connector " and quotes[1].split()[0]=="Port":
+                components[i] = "connector Port"
+                # print(components[i])
+            elif len(quotes)>=3 and components[i][0]=='"':
+                components[i] = quotes[1]
             else:
-                component_name = component_name.split()[0]
+                components[i] = components[i].split()[0]
 
             xmin = int(child[4][0].text)
             ymin = int(child[4][1].text)
@@ -55,6 +58,8 @@ def pascal_to_yolo(yolo_path, pascal_path, images_name, components_dict, exclude
 
             # falta saber identificar o componente pelo número
             # yolo.write(component+" "+str(X)+" "+str(Y)+" "+str(W)+" "+str(H)+"\n")
+            # if component_name == "diode zener array":
+            #     print(name)
             if component_name not in excluded_components:
                 yolo.write(str(components_dict[component_name])+" "+str(X)+" "+str(Y)+" "+str(W)+" "+str(H)+"\n")
 
@@ -109,7 +114,7 @@ def image_normalization(image_file):
             elif (d1 == d2):
                 components[i] = d1
                 components[i+1] = d1
-        # se não testar se a primeira palavra é igual
+        # se não: testar se a primeira palavra é igual
         elif (d1 == d2):
             components[i] = d1
             components[i+1] = d1
@@ -124,6 +129,7 @@ def image_normalization(image_file):
 # Se tem aspas são duas palavras
 # Se não, pega apenas a primeira
 # retorna um conjunto com os nomes de componentes
+# problema: connector Port
 def naive_normalization(image_file):
     tree = ET.parse(image_file[:-3]+"xml")
     root = tree.getroot()
@@ -133,9 +139,15 @@ def naive_normalization(image_file):
     for child in root.findall("object"):
         components.append(child[0].text)
 
+    # verifica: se tem aspas, se é um connector Port
+    # se não for, verifica se as aspas estão no primeiro lugar da string
+    # se não: pega a primeira palavra
     for i in range(len(components)):
         quotes = components[i].split('"')
-        if (len(quotes)>=3) and components[i][0]=='"':
+        if len(quotes)>=3 and quotes[0]=="connector " and quotes[1].split()[0]=="Port":
+            components[i] = "connector Port"
+            # print(components[i])
+        elif len(quotes)>=3 and components[i][0]=='"':
             components[i] = quotes[1]
         else:
             components[i] = components[i].split()[0]
@@ -152,11 +164,11 @@ def naive_normalization(image_file):
 # criar um dicionario com o componente e seu numero
 def normalization(images_name):
     # componentes excluidos
-    excluded = ["text", "component text", "unknown"]
+    excluded = ["text", "component text"]
     # create a empty set
     components = set()
     for image in images_name:
-        #image_normalization(pascal_path+image)
+        # components = components.union(image_normalization(pascal_path+image))
         components = components.union(naive_normalization(pascal_path+image))
         # print(naive_normalization(pascal_path+image))
     
