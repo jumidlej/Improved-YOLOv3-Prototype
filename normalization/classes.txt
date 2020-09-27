@@ -1,0 +1,30 @@
+battery
+button
+buzzer
+capacitor
+capacitor jumper
+clock
+connector
+diode
+diode zener array
+display
+electrolytic capacitor
+emi filter
+ferrite bead
+fuse
+heatsink
+ic
+inductor
+jumper
+led
+pads
+pins
+potentiometer
+resistor
+resistor jumper
+resistor network
+switch
+test point
+transformer
+transistor
+zener diode
