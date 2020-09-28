@@ -189,6 +189,7 @@ def classes(classes_file):
     components_dict = {}
 
     classes = open(classes_file, "r")
+    yolo = open(yolo_path+"classes.txt", "w")
     component_number = 0
     for component in classes:
         # print(component)
@@ -198,8 +199,10 @@ def classes(classes_file):
                 components_dict[component[:-1]] = component_number
             else:
                 components_dict[component[:-1]] = component_number
+                yolo.write(component)
             component_number += 1
 
+    yolo.close()
     classes.close()
 
     return components_dict, excluded
