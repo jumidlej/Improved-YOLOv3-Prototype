@@ -31,14 +31,14 @@ def pascal_to_yolo(yolo_path, pascal_path, images_name, components_dict, exclude
         for child in root.findall("object"):
             component_name = child[0].text
 
-            quotes = components[i].split('"')
+            quotes = component_name.split('"')
             if len(quotes)>=3 and quotes[0]=="connector " and quotes[1].split()[0]=="Port":
-                components[i] = "connector Port"
-                # print(components[i])
-            elif len(quotes)>=3 and components[i][0]=='"':
-                components[i] = quotes[1]
+                component_name = "connector Port"
+                # print(component_name)
+            elif len(quotes)>=3 and component_name[0]=='"':
+                component_name = quotes[1]
             else:
-                components[i] = components[i].split()[0]
+                component_name = component_name.split()[0]
 
             xmin = int(child[4][0].text)
             ymin = int(child[4][1].text)
@@ -163,8 +163,6 @@ def naive_normalization(image_file):
 # colocar cada componente e seu número em um arquivo
 # criar um dicionario com o componente e seu numero
 def normalization(images_name):
-    # componentes excluidos
-    excluded = ["text", "component text"]
     # create a empty set
     components = set()
     for image in images_name:
@@ -176,14 +174,30 @@ def normalization(images_name):
     components = list(components)
     components.sort()
 
-    components_dict = {}
-
     classes = open("classes.txt", "w")
-    component_number = 0
     for component in components:
         if component not in excluded:
             classes.write(component+"\n")
-            components_dict[component] = component_number
+
+    classes.close()
+
+def classes(classes_file):
+    # componentes excluidos
+    excluded = ["text", "component text"]
+    repeated = ["capacitor jumper", "resistor jumper", "resistor network", "diode zener array"]
+
+    components_dict = {}
+
+    classes = open(classes_file, "r")
+    component_number = 0
+    for component in classes:
+        # print(component)
+        if component not in excluded:
+            if component[:-1] in repeated:
+                component_number -= 1
+                components_dict[component[:-1]] = component_number
+            else:
+                components_dict[component[:-1]] = component_number
             component_number += 1
 
     classes.close()
@@ -195,7 +209,7 @@ images = listar_imagens(pascal_path)
 # b = naive_normalization(pascal_path+images[0])
 # print("A - B\n"+str(a.difference(b)))
 # print("B - A\n"+str(b.difference(a)))
-components_dict, excluded = normalization(images)
+components_dict, excluded = classes("classes.txt")
 # print(components_dict)
-# print(excluded)
+
 pascal_to_yolo(yolo_path, pascal_path, images, components_dict, excluded)
