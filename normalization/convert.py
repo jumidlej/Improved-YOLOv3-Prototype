@@ -65,6 +65,7 @@ def pascal_to_yolo(yolo_path, pascal_path, images_name, components_dict, exclude
 
         yolo.close()
 
+# DEFASADA
 # aqui a gente devia arrumar os componentes
 # pegar todos os nomes de componentes de cada imagem
 # colocar em uma lista
@@ -176,8 +177,7 @@ def normalization(images_name):
 
     classes = open("classes.txt", "w")
     for component in components:
-        if component not in excluded:
-            classes.write(component+"\n")
+        classes.write(component+"\n")
 
     classes.close()
 
@@ -192,7 +192,7 @@ def classes(classes_file):
     component_number = 0
     for component in classes:
         # print(component)
-        if component not in excluded:
+        if component[:-1] not in excluded:
             if component[:-1] in repeated:
                 component_number -= 1
                 components_dict[component[:-1]] = component_number
@@ -209,7 +209,8 @@ images = listar_imagens(pascal_path)
 # b = naive_normalization(pascal_path+images[0])
 # print("A - B\n"+str(a.difference(b)))
 # print("B - A\n"+str(b.difference(a)))
+normalization(images)
 components_dict, excluded = classes("classes.txt")
-# print(components_dict)
+print(components_dict)
 
 pascal_to_yolo(yolo_path, pascal_path, images, components_dict, excluded)

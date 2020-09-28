@@ -4,6 +4,7 @@ buzzer
 capacitor
 capacitor jumper
 clock
+component text
 connector
 connector Port
 diode
@@ -26,6 +27,7 @@ resistor jumper
 resistor network
 switch
 test point
+text
 transformer
 transistor
 unknown
