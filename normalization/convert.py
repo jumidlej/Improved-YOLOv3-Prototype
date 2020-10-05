@@ -75,7 +75,7 @@ def pascal_to_yolo(yolo_path, pascal_path, images_name, components_dict, exclude
 # retorna um conjunto com os nomes de componentes
 # PROBLEMAS:
 # E se forem três palavras iguais ou mais
-# E se existir esse caso:
+# Caso:
 # component text C3
 # component text C4
 # component A
@@ -212,7 +212,7 @@ images = listar_imagens(pascal_path)
 # b = naive_normalization(pascal_path+images[0])
 # print("A - B\n"+str(a.difference(b)))
 # print("B - A\n"+str(b.difference(a)))
-normalization(images)
+# normalization(images)
 components_dict, excluded = classes("classes.txt")
 print(components_dict)
 
