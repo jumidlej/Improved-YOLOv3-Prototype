@@ -2,8 +2,8 @@ import cv2
 import xml.etree.ElementTree as ET
 from os import listdir
 
-yolo_path = "/home/ju/Documentos/projeto/Improved-YOLOv3-Prototype/dataset_yolo/"
-pascal_path = "/home/ju/Documentos/projeto/Improved-YOLOv3-Prototype/dataset_pascal/"
+yolo_path = "/home/ju/Documentos/projetos/pcb_detection/Improved-YOLOv3-Prototype/dataset_yolo/"
+pascal_path = "/home/ju/Documentos/projetos/pcb_detection/Improved-YOLOv3-Prototype/dataset_pascal/"
 
 # lista todas em imagens com extensão .jpg em uma pasta
 def listar_imagens(path=None):
@@ -208,6 +208,7 @@ def classes(classes_file):
     return components_dict, excluded
 
 images = listar_imagens(pascal_path)
+print(images)
 # a = image_normalization(pascal_path+images[0])
 # b = naive_normalization(pascal_path+images[0])
 # print("A - B\n"+str(a.difference(b)))

@@ -1,7 +1,7 @@
 # Protótipo: Improved YOLOv3 para detecção de componentes eletrônicos em PCBs
 Artigo [1]: Application Research of Improved YOLOv3 Algorithm in PCB Electronic Component Detection (2019).
 
-Artigo [2]: YOLOv3: An Incremental Improvement (2018)
+Artigo [2]: YOLOv3: An Incremental Improvement (2018).
 
 ## Dataset
 Artigo [3]: Data-Efficient Graph Embedding Learning for PCB Component Detection (2018).
