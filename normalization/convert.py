@@ -110,6 +110,41 @@ def pascal_to_yolo_training(image_names, components_dict, excluded_components):
     train_file.close()
 
 '''
+Argument: List of images name, dictionary with components and its numbers, 
+    list of excluded components
+Does: A .txt file to every image with this format:
+    xmin, ymin, xmax, ymax, class_number
+    in the folder "../augmentation/labels"
+'''
+def pascal_to_txt(image_names, components_dict, excluded_components):
+    for name in image_names:
+        train_file = open("../augmentation/labels/"+name+".txt", 'w')
+
+        tree = ET.parse(pascal_labels_path+name+".xml")
+        root = tree.getroot()
+
+        for child in root.findall("object"):
+            component_name = child[0].text
+
+            quotes = component_name.split('"')
+            if len(quotes)>=3 and quotes[0]=="connector " and quotes[1].split()[0]=="Port":
+                component_name = "connector Port"
+            elif len(quotes)>=3 and component_name[0]=='"':
+                component_name = quotes[1]
+            else:
+                component_name = component_name.split()[0]
+
+            xmin = int(child[4][0].text)
+            ymin = int(child[4][1].text)
+            xmax = int(child[4][2].text)
+            ymax = int(child[4][3].text)
+
+            if component_name not in excluded_components:
+                train_file.write(str(xmin)+" "+str(ymin)+" "+str(xmax)+" "+str(ymax)+" "+str(components_dict[component_name]))
+                train_file.write("\n")
+        train_file.close()
+
+'''
 Argument: Name of xml file
 Returns: Set with all the components of this file
 '''
@@ -201,4 +236,5 @@ components_dict, excluded = classes("classes.txt")
 print(components_dict)
 
 # pascal_to_yolo_labelImg(images, components_dict, excluded)
-pascal_to_yolo_training(image_names, components_dict, excluded)
+# pascal_to_yolo_training(image_names, components_dict, excluded)
+pascal_to_txt(image_names, components_dict, excluded)
