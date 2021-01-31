@@ -41,20 +41,40 @@ resistor
 
 transistor
 
+zener
+
 * Arquivos .txt de treinamento e de teste:
 
 /home/image.jpg xmin,ymin,xmax,ymax,component_number ... xmin,ymin,xmax,ymax,component_number
 
 /home/image.jpg xmin,ymin,xmax,ymax,component_number ... xmin,ymin,xmax,ymax,component_number
 
-## Para treinar a partir do dataset [1] 
+* Caso haja algum problema com exaustão de memória da placa de vídeo, recomendo tentar sem utilizar a placa.
+
+## Para treinar a partir do dataset [3] 
 ### Organização dos arquivos
 * Pasta com todos os arquivos xml juntos (labels)
 * Pasta com todas as imagens juntas
 * Pasta para os arquivos txt que serão gerados (labels)
 
-### Normalizar os labels
-* Rodar label_normalization.py
+### Criação dos arquivos necessários para treinamento
+* Rodar tools/pcb2019_to_train.py
+
+Especificar a pasta de imagens (.jpg)
+
+Especificar a pasta de arquivos xml existentes
+
+Especificar a pasta de arquivos txt que serão gerados
+
+Verificar se quer realizar data augmentation ou não
+
+* Pode levar alguns minutos, para verificar se está funcionando é possível verificar se o número de imagens e labels está aumentando nas respectivas pastas.
+
+* Note que data augmentation só deve ser realizado uma vez. Caso ocorra algum erro é necessário deixar na pasta de imagens somente as 47 imagens originais e rodar o código novamente. Ao final do processo, devem haver 1504 imagens.
+
+### Criação dos arquivos necessários para treinamento - Etapas
+1. Normalizar os labels
+* Arquivo tools/label_normalization.py
 
 Especificar a pasta com todos os arquivos xml de todas as imagens
 
@@ -62,8 +82,8 @@ Especificar a pasta com todos os arquivos xml de todas as imagens
 
 * Note que existirão alguns que deverão ser excluídos ou estarão repetidos, mas isso será tratado na conversão desses arquivos de rótulos de xml (formatação PASCAL) para txt (formatação YOLO).
 
-### XML to YOLO
-* Rodar xml_to_yolo.py
+2. XML to YOLO
+* Arquivo tools/xml_to_yolo.py
 
 Especificar a pasta de imagens (.jpg)
 
@@ -71,12 +91,10 @@ Especificar a pasta de arquivos xml
 
 Especificar a pasta de arquivos txt que serão gerados
 
-Especificar os componentes excluídos e repetidos a partir do arquivo classes.txt
+* Esse script gerará um arquivo txt para cada imagem (nome_da_imagem.txt) e dentro desse arquivo cada linha representará um componente dessa imagem no formato: component_number x y width height. Além disso será gerado um arquivo chamado labels.txt com todos os componentes de todas as imagens.
 
-* Esse script gerará um arquivo txt para cada imagem no formato: nome_da_imagem.txt e dentro desse arquivo cada linha representa um componente nessa imagem no formato: component_number x y width height. Além disso será gerado um arquivo chamado labels.txt com todos os componentes na ordem de seu devido número.
-
-### Data Augmentation in YOLO format (Optional)
-* Rodar o jupyter notebook traditional.ipynb
+3. Data Augmentation in YOLO format (Optional)
+* Arquivo augmentation/traditional.ipynb
 
 Especificar a pasta com as imagens
 
@@ -84,8 +102,8 @@ Especificar a pasta com os labels (txt)
 
 * Esse script realizará data augmentation e as imagens e labels serão armazenados nas mesmas pastas especificadas.
 
-### YOLO to training format
-* Rodar o script yolo_to_training.py
+4. YOLO to training format
+* Arquivo tools/script yolo_to_training.py
 
 Especificar a pasta com as imagens
 
@@ -94,24 +112,22 @@ Especificar a pasta com os labels (txt)
 * Esse script gerará um arquivo chamado train_augmented.txt no seguinte formato:
 image.jpg xmin,ymin,xmax,ymax,component_number ... xmin,ymin,xmax,ymax,component_number
 
-## Train
+## Treinamento
 Já possuímos os arquivos necessários para treinar um modelo.
 
 * O arquivo de rótulos: labels.txt
 * O arquivo de treinamento: train_augmented.txt
-* O arquivo de teste pode ser criado tirando algumas imagens do arquivo de treinamento e colocando em um outro arquivo de teste.
+* O arquivo de teste pode ser criado copiando algumas linhas do arquivo de treinamento e colando em um outro arquivo txt de teste.
 
-1. git clone https://github.com/pythonlessons/TensorFlow-2.x-YOLOv3.git
+1. Dentro do arquivo yolov3/configs.py alterar:
+* TRAIN_CLASSES: dir/labels.txt
+* TRAIN_ANNOT_PATH: dir/train_augmented.txt
+* TEST_ANNOT_PATH: dir/test.txt
+* TRAIN_DATA_AUG: False (Caso já tenha realizado data augmentation pode colocar False, mas eu não sei bem o que é isso pra falar a verdade)
 
-2. Dentro do arquivo yolov3/configs.py alterar:
-* TRAIN_CLASSES: /home/labels.txt
-* TRAIN_ANNOT_PATH: /home/train_augmented.txt
-* TEST_ANNOT_PATH: /home/test.txt
-* TRAIN_DATA_AUG: False (Como eu fiz data augmentation eu deixei false, mas eu não sei bem o que é isso)
-
-3. Run python3 train.py
+2. Run python3 train.py
 
 Existem várias variáveis importantes para o treinamento que eu ainda não utilizei ou não sei exatamente pra que servem, mas que podem ser alteradas.
 
-## Test
+## Teste
 1. Editar (selecionar imagem) e rodar python3 detection_demo.py

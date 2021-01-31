@@ -1,0 +1,28 @@
+battery
+button
+buzzer
+capacitor
+clock
+connector
+connector Port
+diode
+display
+electrolytic capacitor
+emi filter
+ferrite bead
+fuse
+heatsink
+ic
+inductor
+jumper
+led
+pads
+pins
+potentiometer
+resistor
+switch
+test point
+transformer
+transistor
+unknown
+zener diode
