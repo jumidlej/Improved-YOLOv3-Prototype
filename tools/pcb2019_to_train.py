@@ -11,13 +11,13 @@ from yolo_to_training import *
 from traditional import *
 
 # txt labels path (yolo format)
-yolo_labels_path = "/home/jacq/Documentos/Datasets/pcb_yolo/labels/"
+yolo_labels_path = "/home/jacq/Documentos/Datasets/pcb_dataset/yolo/labels/"
 
 # xml labels path (pascal format)
-pascal_labels_path = "/home/jacq/Documentos/Datasets/pcb_dataset/labels/"
+pascal_labels_path = "/home/jacq/Documentos/Datasets/pcb_dataset/pascal/labels/"
 
 # images path
-yolo_images_path = "/home/jacq/Documentos/Datasets/pcb_yolo/images/"
+yolo_images_path = "/home/jacq/Documentos/Datasets/pcb_dataset/yolo/images/"
 
 # data augmentation
 data_augmentation = False
@@ -33,8 +33,8 @@ pascal_to_yolo_labelImg(yolo_images_path, yolo_labels_path, pascal_labels_path, 
 
 # 3. data augmentation
 if data_augmentation:
-    data_dir = "/home/jacq/Documentos/Datasets/pcb_yolo/images"
-    label_dir = "/home/jacq/Documentos/Datasets/pcb_yolo/labels"
+    data_dir = yolo_images_path[:-1]
+    label_dir = yolo_labels_path[:-1]
 
     list_ds = tf.data.Dataset.list_files(str(data_dir+'*/*'), shuffle=False)
     list_ds = list_ds.shuffle(47, reshuffle_each_iteration=False)
