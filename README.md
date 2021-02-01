@@ -52,27 +52,31 @@ zener
 * Caso haja algum problema com exaustão de memória da placa de vídeo, recomendo tentar sem utilizar a placa.
 
 ## Para treinar a partir do dataset [3] 
+É preciso ter as imagens originais e os labels (arquivos xml) em pastas separadas e especificar uma pasta vazia para criação dos labels (arquivos txt).
+Link para Google Drive com o dataset e as pastas já criadas https://drive.google.com/drive/folders/1Q8m0afWvAhBoQz5nKXHkiOnsoBIg0jYi?usp=sharing.
+Pra ficar mais organizado eu recomendo copiar as imagens da pasta pascal/images para pasta yolo/images também.
+
 ### Organização dos arquivos
-* Pasta com todos os arquivos xml juntos (labels)
-* Pasta com todas as imagens juntas
+* Pasta com todos os arquivos xml (labels)
+* Pasta com todas as imagens
 * Pasta para os arquivos txt que serão gerados (labels)
 
 ### Criação dos arquivos necessários para treinamento
 * Rodar tools/pcb2019_to_train.py
 
-Especificar a pasta de imagens (.jpg)
+Especificar a pasta de imagens (.jpg) (yolo/images)
 
-Especificar a pasta de arquivos xml existentes
+Especificar a pasta de arquivos xml existentes (pascal/labels)
 
-Especificar a pasta de arquivos txt que serão gerados
+Especificar a pasta de arquivos txt que serão gerados (yolo/labels)
 
 Verificar se quer realizar data augmentation ou não
 
 * Pode levar alguns minutos, para verificar se está funcionando é possível verificar se o número de imagens e labels está aumentando nas respectivas pastas.
 
-* Note que data augmentation só deve ser realizado uma vez. Caso ocorra algum erro é necessário deixar na pasta de imagens somente as 47 imagens originais e rodar o código novamente. Ao final do processo, devem haver 1504 imagens.
+* Note que data augmentation só deve ser realizado uma vez. Caso ocorra algum erro é necessário deixar na pasta de imagens somente as 47 imagens originais e rodar o código novamente. Ao final do processo devem haver 1504 imagens.
 
-### Criação dos arquivos necessários para treinamento - Etapas
+### Explicação das etapas
 1. Normalizar os labels
 * Arquivo tools/label_normalization.py
 
