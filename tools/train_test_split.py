@@ -11,7 +11,7 @@ args = vars(ap.parse_args())
 txTest = args["split"]
 szTest = args["size"]
 
-ds = open("train_augmented.txt", "r")
+ds = open("train_changed.txt", "r")
 train_file = open("train_split.txt", "w")
 test_file = open("test_split.txt", "w")
 
@@ -23,7 +23,7 @@ if(len(lines) < szTest):
 random.shuffle(lines)
 
 for i in range(szTest):
-    if i < szTest*0.4:
+    if i < szTest*txTest:
         test_file.write(lines[i])
     else:
         train_file.write(lines[i])
