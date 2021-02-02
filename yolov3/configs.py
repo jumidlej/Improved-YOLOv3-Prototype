@@ -37,8 +37,8 @@ if YOLO_TYPE                == "yolov3":
 TRAIN_YOLO_TINY             = False
 TRAIN_SAVE_BEST_ONLY        = True # saves only best model according validation loss (True recommended)
 TRAIN_SAVE_CHECKPOINT       = False # saves all best validated checkpoints in training process (may require a lot disk space) (False recommended)
-TRAIN_CLASSES               = "/home/jacq/Documentos/Improved-YOLOv3-Prototype/model_data/labels.txt"
-TRAIN_ANNOT_PATH            = "/home/jacq/Documentos/Improved-YOLOv3-Prototype/model_data/small_train.txt"
+TRAIN_CLASSES               = "model_data/labels.txt"
+TRAIN_ANNOT_PATH            = "model_data/train_split.txt"
 TRAIN_LOGDIR                = "log"
 TRAIN_CHECKPOINTS_FOLDER    = "checkpoints"
 TRAIN_MODEL_NAME            = f"{YOLO_TYPE}_pcb"
@@ -54,7 +54,7 @@ TRAIN_WARMUP_EPOCHS         = 2
 TRAIN_EPOCHS                = 10
 
 # TEST options
-TEST_ANNOT_PATH             = "/home/jacq/Documentos/Improved-YOLOv3-Prototype/model_data/small_test.txt"
+TEST_ANNOT_PATH             = "model_data/test_split.txt"
 TEST_BATCH_SIZE             = 4
 TEST_INPUT_SIZE             = 416
 TEST_DATA_AUG               = False
