@@ -6,14 +6,14 @@ from os import listdir
 Does: A .txt file with every image in the yolo_images_path in this format:
     image xmin,ymin,xmax,ymax,class_number xmin,ymin,xmax,ymax,class_number ...
 '''
-def yolo_to_training(yolo_images_path, yolo_labels_path):
+def yolo_to_training(training_file_name, yolo_images_path, yolo_labels_path):
     images_name = []
     files = [f for f in listdir(yolo_labels_path)]
     for f in files:
         if f[len(f)-4:] == ".txt":
             images_name.append(f[:-4])
 
-    train_file = open("train_augmented.txt", 'w')
+    train_file = open(training_file_name, 'w')
     for name in images_name:
         train_file.write(yolo_images_path+name+".jpg")
         image = cv2.imread(yolo_images_path+name+".jpg")

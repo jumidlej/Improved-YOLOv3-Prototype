@@ -2,14 +2,11 @@ import cv2
 import xml.etree.ElementTree as ET
 from os import listdir
 
-excluded = ["text", "component text"]
-repeated = ["capacitor jumper", "resistor jumper", "resistor network", "diode zener array"]
-
 '''
 Argument: Images path (.jpg)
-Returns: List of images name
+Returns: List of images names
 '''
-def list_images_name(path=None):
+def list_images_names(path=None):
     if path == None:
         print("Nenhuma pasta foi especificada.")
         return 0
@@ -27,7 +24,7 @@ Argument: A classes.txt file
 Does: A labels.txt file with all components that are not excluded or repeated
 Returns: A components dictionary in which components have a respective number
 '''
-def components_dictionary(classes_file):
+def components_dictionary(classes_file, excluded, repeated):
     components_dict = {}
 
     classes = open(classes_file, "r")
@@ -52,7 +49,7 @@ def components_dictionary(classes_file):
 Arguments: List of images name, dictionary with components and its numbers
 Does: A .txt file to every image in yolo format
 '''
-def pascal_to_yolo_labelImg(yolo_images_path, yolo_labels_path, pascal_labels_path, images_name, components_dict):
+def pascal_to_yolo_labelImg(yolo_images_path, yolo_labels_path, pascal_labels_path, images_name, components_dict, excluded):
     for name in images_name:
         image = cv2.imread(yolo_images_path+name+".jpg")
         yolo = open(yolo_labels_path+name+".txt", 'w')
@@ -62,15 +59,19 @@ def pascal_to_yolo_labelImg(yolo_images_path, yolo_labels_path, pascal_labels_pa
 
         for child in root.findall("object"):
             component_name = child[0].text
-
-            quotes = component_name.split('"')
-            if len(quotes)>=3 and quotes[0]=="connector " and quotes[1].split()[0]=="Port":
-                component_name = "connector Port"
-                # print(component_name)
-            elif len(quotes)>=3 and component_name[0]=='"':
-                component_name = quotes[1]
+            
+            words = component_name.split()
+            if len(words)>=2:
+                if words[0]+words[1]=='connector"Port':
+                    print(component_name)
+                    component_name = "connectorPort"
+                else:
+                    if '"' in words[0]:
+                        component_name = words[0].split('"')[1]
+                    else:
+                        component_name = words[0]
             else:
-                component_name = component_name.split()[0]
+                component_name = words[0]
 
             xmin = int(child[4][0].text)
             ymin = int(child[4][1].text)
