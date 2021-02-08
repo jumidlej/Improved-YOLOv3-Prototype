@@ -2,17 +2,15 @@ battery
 button
 buzzer
 capacitor
-capacitor jumper
 clock
-component text
+component
 connector
-connector Port
+connectorPort
 diode
-diode zener array
 display
-electrolytic capacitor
-emi filter
-ferrite bead
+electrolytic
+emi
+ferrite
 fuse
 heatsink
 ic
@@ -23,12 +21,10 @@ pads
 pins
 potentiometer
 resistor
-resistor jumper
-resistor network
 switch
-test point
+test
 text
 transformer
 transistor
 unknown
-zener diode
+zener
