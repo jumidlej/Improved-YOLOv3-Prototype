@@ -37,7 +37,7 @@ def normalization_method(pascal_labels_path, xml, dic):
         words = components[i].split()
         if len(words)>=2:
             if words[0]+words[1]=='connector"Port':
-                print(components[i])
+                # print(components[i])
                 components[i] = "connectorPort"
             else:
                 if '"' in words[0]:
