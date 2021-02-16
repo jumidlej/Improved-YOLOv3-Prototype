@@ -9,16 +9,10 @@ from segmentation.pcbs_perspective import *
 from segmentation.segment_pcbs import *
 
 def main():
-    image_path = "/home/jacq/Documentos/segmentation/images/opencv_frame_01.png"
-    results_path = "images/"
-
-    extension = image_path.split(".")[1]
-    image_name = image_path.split(".")[0]
-    image_name = image_name.split("/")[-1]
-    image_path = image_path[:len(image_path)-(len(image_name)+len(extension)+1)]
-    # print(image_path)
-    # print(image_name)
-    # print(extension)
+    image_path = "/home/pi/image/"
+    image_name = list_png_files(image_path)
+    extension = "png"
+    results_path = "/home/pi/results/"
 
     segment_pcbs(image_path+image_name+"."+extension, results_path)
 
