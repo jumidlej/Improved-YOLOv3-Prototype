@@ -10,7 +10,7 @@ from segmentation.segment_pcbs import *
 
 def main():
     image_path = "/home/pi/image/"
-    image_name = list_png_files(image_path)
+    image_name = list_png_files(image_path)[0]
     extension = "png"
     results_path = "/home/pi/results/"
 
