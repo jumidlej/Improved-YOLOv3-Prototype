@@ -143,6 +143,18 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
         coor = np.array(bbox[:4], dtype=np.int32)
         score = bbox[4]
         class_ind = int(bbox[5])
+
+        if class_ind == 0:
+            rectangle_colors=(255, 0, 0)
+        elif class_ind == 1:
+            rectangle_colors=(153, 0, 255)
+        elif class_ind == 2:
+            rectangle_colors=(155, 155, 155)
+        elif class_ind == 3:
+            rectangle_colors=(0, 0, 0)
+        elif class_ind == 4:
+            rectangle_colors=(255, 255, 255)
+
         bbox_color = rectangle_colors if rectangle_colors != '' else colors[class_ind]
         bbox_thick = int(0.6 * (image_h + image_w) / 1000)
         if bbox_thick < 1: bbox_thick = 1
