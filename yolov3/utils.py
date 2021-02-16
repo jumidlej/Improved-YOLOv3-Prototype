@@ -80,13 +80,12 @@ def Load_Yolo_model():
         try: tf.config.experimental.set_memory_growth(gpus[0], True)
         except RuntimeError: pass
         
-    if YOLO_FRAMEWORK == "tf": # TensorFlow detection
-        if YOLO_TYPE == "yolov4":
-            Darknet_weights = YOLO_V4_TINY_WEIGHTS if TRAIN_YOLO_TINY else YOLO_V4_WEIGHTS
-        if YOLO_TYPE == "yolov3":
-            Darknet_weights = YOLO_V3_TINY_WEIGHTS if TRAIN_YOLO_TINY else YOLO_V3_WEIGHTS
-            
+    if YOLO_FRAMEWORK == "tf": # TensorFlow detection            
         if YOLO_CUSTOM_WEIGHTS == False:
+            if YOLO_TYPE == "yolov4":
+                Darknet_weights = YOLO_V4_TINY_WEIGHTS if TRAIN_YOLO_TINY else YOLO_V4_WEIGHTS
+            if YOLO_TYPE == "yolov3":
+                Darknet_weights = YOLO_V3_TINY_WEIGHTS if TRAIN_YOLO_TINY else YOLO_V3_WEIGHTS
             print("Loading Darknet_weights from:", Darknet_weights)
             yolo = Create_Yolo(input_size=YOLO_INPUT_SIZE, CLASSES=YOLO_COCO_CLASSES)
             load_yolo_weights(yolo, Darknet_weights) # use Darknet weights
