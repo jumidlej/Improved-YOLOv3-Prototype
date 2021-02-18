@@ -35,16 +35,20 @@ def main():
     pcb_2 = pcb_final_cut(image_2, results_path)
 
     yolo = Load_Yolo_model()
-    image, bboxes = detect_image(yolo, pcb_1, results_path+image_name+"_detection_1."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
+    image_1, bboxes_1 = detect_image(yolo, pcb_1, results_path+image_name+"_detection_1."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
 
     yolo = Load_Yolo_model()
-    image, bboxes = detect_image(yolo, pcb_2, results_path+image_name+"_detection_2."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
+    image_2, bboxes_2 = detect_image(yolo, pcb_2, results_path+image_name+"_detection_2."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
 
-    txt_file = open(results_path+image_name+".txt", "w")
+    txt_1 = open(results_path+image_name+"detection_1.txt", "w")
+    txt_2 = open(results_path+image_name+"detection_2.txt", "w")
 
-    for bbox in bboxes:
-        txt_file.write(str(bbox[0])+" "+str(bbox[1])+" "+str(bbox[2])+" "+str(bbox[3])+" "+str(bbox[4])+" "+str(bbox[5])+"\n")
+    for bbox in bboxes_1:
+        txt_1.write(str(bbox[0])+" "+str(bbox[1])+" "+str(bbox[2])+" "+str(bbox[3])+" "+str(bbox[4])+" "+str(bbox[5])+"\n")
+    for bbox in bboxes_2:
+        txt_2.write(str(bbox[0])+" "+str(bbox[1])+" "+str(bbox[2])+" "+str(bbox[3])+" "+str(bbox[4])+" "+str(bbox[5])+"\n")
 
-    txt_file.close()
+    txt_1.close()
+    txt_2.close()
 
 main()
