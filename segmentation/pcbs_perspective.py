@@ -173,37 +173,37 @@ def crop_rotated_rectangle(rectangle, image, additional_width=0, additional_heig
 
     return img_crop
 
-def pcb_final_cut(image_path, results_path):
-    image_name = image_path.split("/")[-1]
-    extension = image_name.split(".")[1]
-    image_name = image_name.split(".")[0]
+def pcb_final_cut(image, results_path):
+    # image_name = image_path.split("/")[-1]
+    # extension = image_name.split(".")[1]
+    # image_name = image_name.split(".")[0]
     # print(image_name)
     # print(extension)
 
-    image = load_image(image_path)
+    # image = load_image(image_path)
 
     mask = thresholding(image.copy(), dilate=1)
-    cv2.imwrite(results_path+image_name+"_1."+extension, mask)
+    # cv2.imwrite(results_path+image_name+"_1."+extension, mask)
 
     contours, image_contour = max_area_contour(mask, image.copy())
-    cv2.imwrite(results_path+image_name+"_2."+extension, image_contour)
+    # cv2.imwrite(results_path+image_name+"_2."+extension, image_contour)
 
     left, right, bottom, up = find_lines(image_contour)
-    cv2.imwrite(results_path+image_name+"_3."+extension, bottom)
-    cv2.imwrite(results_path+image_name+"_4."+extension, up)
-    cv2.imwrite(results_path+image_name+"_5."+extension, left)
+    # cv2.imwrite(results_path+image_name+"_3."+extension, bottom)
+    # cv2.imwrite(results_path+image_name+"_4."+extension, up)
+    # cv2.imwrite(results_path+image_name+"_5."+extension, left)
 
     bottom_line = hough_lines(bottom, 30)
     bottom = draw_line(bottom_line[0], bottom_line[1], bottom)
-    cv2.imwrite(results_path+image_name+"_6."+extension, bottom)
+    # cv2.imwrite(results_path+image_name+"_6."+extension, bottom)
 
     up_line = hough_lines(up, 30)
     up = draw_line(up_line[0], up_line[1], up)
-    cv2.imwrite(results_path+image_name+"_7."+extension, up)
+    # cv2.imwrite(results_path+image_name+"_7."+extension, up)
 
     left_line = hough_lines(left, 30)
     left = draw_line(left_line[0],left_line[1], left)
-    cv2.imwrite(results_path+image_name+"_8."+extension, left)
+    # cv2.imwrite(results_path+image_name+"_8."+extension, left)
 
     angle = (bottom_line[1]+up_line[1])/2
 
@@ -212,7 +212,7 @@ def pcb_final_cut(image_path, results_path):
 
     corners_image = cv2.circle(image.copy(), bottom_left_corner, 3, (0, 0, 255), 1)
     corners_image = cv2.circle(corners_image, top_left_corner, 3, (0, 0, 255), 1)
-    cv2.imwrite(results_path+image_name+"_9."+extension, corners_image)
+    # cv2.imwrite(results_path+image_name+"_9."+extension, corners_image)
 
     x1, y1, x2, y2 = define_points(top_left_corner[0], top_left_corner[1], angle)
     x3, y3, x4, y4 = define_points(bottom_left_corner[0], bottom_left_corner[1], angle)
@@ -221,7 +221,7 @@ def pcb_final_cut(image_path, results_path):
     corners_image = cv2.circle(corners_image, (x2, y2), 3, (0, 255, 255), 1)
     corners_image = cv2.circle(corners_image, (x3, y3), 3, (0, 255, 255), 1)
     corners_image = cv2.circle(corners_image, (x4, y4), 3, (0, 255, 255), 1)
-    cv2.imwrite(results_path+image_name+"_10."+extension, corners_image)
+    # cv2.imwrite(results_path+image_name+"_10."+extension, corners_image)
 
     angle = math.atan2(abs(y1-y2),abs(x1-x2))
     if (y1 > y2):
@@ -237,6 +237,6 @@ def pcb_final_cut(image_path, results_path):
     rectangle = ((center_x, center_y), (width,height), angle)
 
     pcb = crop_rotated_rectangle(rectangle, image.copy())
-    cv2.imwrite(results_path+image_name+"_11."+extension, pcb)
-
-
+    # cv2.imwrite(results_path+image_name+"_11."+extension, pcb)
+     
+    return pcb

@@ -131,31 +131,32 @@ Does: find the two pcbs and crop them in to two different images
 Arguments: images path, cropped images path, image name
 '''
 def segment_pcbs(image_path, results_path):
-    image_name = image_path.split("/")[-1]
-    extension = image_name.split(".")[1]
-    image_name = image_name.split(".")[0]
+    # image_name = image_path.split("/")[-1]
+    # extension = image_name.split(".")[1]
+    # image_name = image_name.split(".")[0]
     # print(image_name)
     # print(extension)
 
     # carregar imagem
     image = load_image(image_path)
-    cv2.imwrite(results_path+image_name+"_1."+extension, image)
+    # cv2.imwrite(results_path+image_name+"_1."+extension, image)
 
     # binarização da imagem
     mask = thresholding(image, dilate=1)
-    cv2.imwrite(results_path+image_name+"_2."+extension, mask)
+    # cv2.imwrite(results_path+image_name+"_2."+extension, mask)
 
     # maior contorno (placa)
     contours, image_contour = max_area_contour(mask, image.copy())
-    cv2.imwrite(results_path+image_name+"_3."+extension, image_contour)
+    # cv2.imwrite(results_path+image_name+"_3."+extension, image_contour)
 
     # retângulo (placa)
     rectangles, image_rectangle = rotated_rectangle(contours, image.copy())
-    cv2.imwrite(results_path+image_name+"_4."+extension, image_rectangle)
+    # cv2.imwrite(results_path+image_name+"_4."+extension, image_rectangle)
     
-    cropped_image = crop_rotated_rectangle(rectangles[0], image.copy(), 120, 10)
-    cv2.imwrite(results_path+image_name+"_5."+extension, cropped_image)
+    cropped_image_1 = crop_rotated_rectangle(rectangles[0], image.copy(), 120, 10)
+    # cv2.imwrite(results_path+image_name+"_5."+extension, cropped_image_1)
 
-    cropped_image = crop_rotated_rectangle(rectangles[1], image.copy(), 120, 10)
-    cv2.imwrite(results_path+image_name+"_6."+extension, cropped_image)
+    cropped_image_2 = crop_rotated_rectangle(rectangles[1], image.copy(), 120, 10)
+    # cv2.imwrite(results_path+image_name+"_6."+extension, cropped_image_2)
 
+    return cropped_image_1, cropped_image_2

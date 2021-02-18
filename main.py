@@ -8,22 +8,43 @@ from yolov3.configs import *
 from segmentation.pcbs_perspective import * 
 from segmentation.segment_pcbs import *
 
+def list_files(path=None):
+    if path == None:
+        print("Nenhuma pasta foi especificada.")
+        return 0
+
+    images = []
+    files = [f for f in listdir(path)]
+    for f in files:
+        images.append(f)
+
+    return images
+
 def main():
     image_path = "/home/pi/image/"
-    image_name = list_png_files(image_path)[0]
-    extension = "png"
     results_path = "/home/pi/results/"
 
-    segment_pcbs(image_path+image_name+"."+extension, results_path)
+    images = list_files(image_path)
+    image_name = images[0].split(".")[0]
+    extension = images[0].split(".")[1]
 
-    pcb_final_cut(results_path+image_name+"_5."+extension, results_path)
+    image_1, image_2 = segment_pcbs(image_path+image_name+"."+extension, results_path)
 
-    pcb_final_cut(results_path+image_name+"_6."+extension, results_path)
+    pcb_1 = pcb_final_cut(image_1, results_path)
+
+    pcb_2 = pcb_final_cut(image_2, results_path)
 
     yolo = Load_Yolo_model()
-    detect_image(yolo, results_path+image_name+"_5_11."+extension, results_path+image_name+"_5_12."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
+    image, bboxes = detect_image(yolo, pcb_1, results_path+image_name+"_detection_1."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
 
     yolo = Load_Yolo_model()
-    detect_image(yolo, results_path+image_name+"_6_11."+extension, results_path+image_name+"_6_12."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
+    image, bboxes = detect_image(yolo, pcb_2, results_path+image_name+"_detection_2."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
+
+    txt_file = open(image_name+".txt", "w")
+
+    for bbox in bboxes:
+        txt_file.write(str(bbox[0])+" "+str(bbox[1])+" "+str(bbox[2])+" "+str(bbox[3])+" "+str(bbox[4])+" "+str(bbox[5])+"\n")
+
+    txt_file.close()
 
 main()
