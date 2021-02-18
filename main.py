@@ -28,6 +28,9 @@ def main():
     image_name = images[0].split(".")[0]
     extension = images[0].split(".")[1]
 
+    os.mkdir(results_path+image_name)
+    results_path = results_path+image_name+"/"
+
     image_1, image_2 = segment_pcbs(image_path+image_name+"."+extension, results_path)
 
     pcb_1 = pcb_final_cut(image_1, results_path)
