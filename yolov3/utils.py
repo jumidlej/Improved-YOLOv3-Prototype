@@ -147,9 +147,9 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
         if class_ind == 0:
             rectangle_colors=(255, 0, 0)
         elif class_ind == 1:
-            rectangle_colors=(153, 0, 255)
+            rectangle_colors=(155, 0, 255)
         elif class_ind == 2:
-            rectangle_colors=(155, 155, 155)
+            rectangle_colors=(0, 255, 255)
         elif class_ind == 3:
             rectangle_colors=(0, 0, 0)
         elif class_ind == 4:
@@ -176,15 +176,15 @@ def draw_bbox(image, bboxes, CLASSES=YOLO_COCO_CLASSES, show_label=True, show_co
                 print("You received KeyError, this might be that you are trying to use yolo original weights")
                 print("while using custom classes, if using custom model in configs.py set YOLO_CUSTOM_WEIGHTS = True")
 
-            # get text size
-            (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                                                                  fontScale, thickness=bbox_thick)
-            # put filled text rectangle
-            cv2.rectangle(image, (x1, y1), (x1 + text_width, y1 - text_height - baseline), bbox_color, thickness=cv2.FILLED)
+            # # get text size
+            # (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_COMPLEX_SMALL,
+            #                                                       fontScale, thickness=bbox_thick)
+            # # put filled text rectangle
+            # cv2.rectangle(image, (x1, y1), (x1 + text_width, y1 - text_height - baseline), bbox_color, thickness=cv2.FILLED)
 
-            # put text above rectangle
-            cv2.putText(image, label, (x1, y1-4), cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                        fontScale, Text_colors, bbox_thick, lineType=cv2.LINE_AA)
+            # # put text above rectangle
+            # cv2.putText(image, label, (x1, y1-4), cv2.FONT_HERSHEY_COMPLEX_SMALL,
+            #             fontScale, Text_colors, bbox_thick, lineType=cv2.LINE_AA)
 
     return image
 
@@ -289,10 +289,10 @@ def postprocess_boxes(pred_bbox, original_image, input_size, score_threshold):
     return np.concatenate([coors, scores[:, np.newaxis], classes[:, np.newaxis]], axis=-1)
 
 
-def detect_image(Yolo, image_path, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
-    original_image      = cv2.imread(image_path)
-    original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
-    original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+def detect_image(Yolo, original_image, output_path, input_size=416, show=False, CLASSES=YOLO_COCO_CLASSES, score_threshold=0.3, iou_threshold=0.45, rectangle_colors=''):
+    # original_image      = cv2.imread(image_path)
+    # original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
+    # original_image      = cv2.cvtColor(original_image, cv2.COLOR_BGR2RGB)
 
     image_data = image_preprocess(np.copy(original_image), [input_size, input_size])
     image_data = image_data[np.newaxis, ...].astype(np.float32)
@@ -312,6 +312,7 @@ def detect_image(Yolo, image_path, output_path, input_size=416, show=False, CLAS
     
     bboxes = postprocess_boxes(pred_bbox, original_image, input_size, score_threshold)
     bboxes = nms(bboxes, iou_threshold, method='nms')
+    # print(bboxes)
 
     image = draw_bbox(original_image, bboxes, CLASSES=CLASSES, rectangle_colors=rectangle_colors)
     # CreateXMLfile("XML_Detections", str(int(time.time())), original_image, bboxes, read_class_names(CLASSES))
@@ -325,7 +326,7 @@ def detect_image(Yolo, image_path, output_path, input_size=416, show=False, CLAS
         # To close the window after the required kill value was provided
         cv2.destroyAllWindows()
         
-    return image
+    return image, bboxes
 
 def Predict_bbox_mp(Frames_data, Predicted_data, Processing_times):
     gpus = tf.config.experimental.list_physical_devices('GPU')
