@@ -40,7 +40,7 @@ def main():
     yolo = Load_Yolo_model()
     image, bboxes = detect_image(yolo, pcb_2, results_path+image_name+"_detection_2."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
 
-    txt_file = open(image_name+".txt", "w")
+    txt_file = open(results_path+image_name+".txt", "w")
 
     for bbox in bboxes:
         txt_file.write(str(bbox[0])+" "+str(bbox[1])+" "+str(bbox[2])+" "+str(bbox[3])+" "+str(bbox[4])+" "+str(bbox[5])+"\n")
