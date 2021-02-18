@@ -21,6 +21,8 @@ def list_files(path=None):
     return images
 
 def main():
+    # "/home/jacq/Documentos/datasets/C920/"
+    # "/home/jacq/"
     image_path = "/home/pi/image/"
     results_path = "/home/pi/results/"
 
@@ -28,7 +30,7 @@ def main():
     image_name = images[0].split(".")[0]
     extension = images[0].split(".")[1]
 
-    os.mkdir(results_path+image_name)
+    os.mkdir(results_path+image_name, mode=0o755)
     results_path = results_path+image_name+"/"
 
     image_1, image_2 = segment_pcbs(image_path+image_name+"."+extension, results_path)
