@@ -21,8 +21,8 @@ def list_files(path=None):
     return images
 
 def main():
-    image_path = "/home/pi/image/"
-    results_path = "/home/pi/results/"
+    image_path = "/home/jacq/Documentos/datasets/C920/"
+    results_path = "/home/jacq/"
 
     images = list_files(image_path)
     image_name = images[0].split(".")[0]
@@ -40,8 +40,8 @@ def main():
     yolo = Load_Yolo_model()
     image_2, bboxes_2 = detect_image(yolo, pcb_2, results_path+image_name+"_detection_2."+extension, input_size=YOLO_INPUT_SIZE, show=False, CLASSES=TRAIN_CLASSES)
 
-    txt_1 = open(results_path+image_name+"detection_1.txt", "w")
-    txt_2 = open(results_path+image_name+"detection_2.txt", "w")
+    txt_1 = open(results_path+image_name+"_detection_1.txt", "w")
+    txt_2 = open(results_path+image_name+"_detection_2.txt", "w")
 
     for bbox in bboxes_1:
         txt_1.write(str(bbox[0])+" "+str(bbox[1])+" "+str(bbox[2])+" "+str(bbox[3])+" "+str(bbox[4])+" "+str(bbox[5])+"\n")
