@@ -24,7 +24,7 @@ YOLO_STRIDES                = [8, 16, 32]
 YOLO_IOU_LOSS_THRESH        = 0.5
 YOLO_ANCHOR_PER_SCALE       = 3
 YOLO_MAX_BBOX_PER_SCALE     = 100
-YOLO_INPUT_SIZE             = 416
+YOLO_INPUT_SIZE             = 320
 if YOLO_TYPE                == "yolov4":
     YOLO_ANCHORS            = [[[12,  16], [19,   36], [40,   28]],
                                [[36,  75], [76,   55], [72,  146]],
@@ -41,10 +41,10 @@ TRAIN_CLASSES               = "tools/labels.txt"
 TRAIN_ANNOT_PATH            = "tools/train_split.txt"
 TRAIN_LOGDIR                = "log"
 TRAIN_CHECKPOINTS_FOLDER    = "checkpoints"
-TRAIN_MODEL_NAME            = f"{YOLO_TYPE}_custom"
+TRAIN_MODEL_NAME            = f"{YOLO_TYPE}_custom_320"
 TRAIN_LOAD_IMAGES_TO_RAM    = False # With True faster training, but need more RAM
 TRAIN_BATCH_SIZE            = 32
-TRAIN_INPUT_SIZE            = 416
+TRAIN_INPUT_SIZE            = 320
 TRAIN_DATA_AUG              = False
 TRAIN_TRANSFER              = False
 TRAIN_FROM_CHECKPOINT       = False # "checkpoints/yolov3_custom"
@@ -56,7 +56,7 @@ TRAIN_EPOCHS                = 50
 # TEST options
 TEST_ANNOT_PATH             = "tools/test_split.txt"
 TEST_BATCH_SIZE             = 1
-TEST_INPUT_SIZE             = 416
+TEST_INPUT_SIZE             = 320
 TEST_DATA_AUG               = False
 TEST_DECTECTED_IMAGE_PATH   = ""
 TEST_SCORE_THRESHOLD        = 0.3
@@ -67,5 +67,5 @@ TEST_IOU_THRESHOLD          = 0.45
 if TRAIN_YOLO_TINY:
     YOLO_STRIDES            = [16, 32, 64]    
     YOLO_ANCHORS            = [[[10,  14], [23,   27], [37,   58]],
-                               [[81,  82], [135, 169], [344, 319]],
+                               [[81,  82], [135, 169], [244, 219]],
                                [[0,    0], [0,     0], [0,     0]]]
