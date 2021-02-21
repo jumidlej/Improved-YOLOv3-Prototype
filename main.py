@@ -8,6 +8,7 @@ from yolov3.configs import *
 from segmentation.pcbs_perspective import * 
 from segmentation.segment_pcbs import *
 from threading import Thread
+from datetime import datetime
 
 def list_files(path=None):
     if path == None:
@@ -24,6 +25,8 @@ def list_files(path=None):
 def main():
     # "/home/jacq/Documentos/datasets/C920/"
     # "/home/jacq/"
+    begin = datetime.now()
+    print("Started =", begin)
 
     image_path = "/home/pi/image/"
     results_path = "/home/pi/results/"
@@ -39,16 +42,27 @@ def main():
     finally:
         results_path = results_path+image_name+"/"
 
+    segment_time = datetime.now()
+    print("Make dir time =", segment_time-begin)
     image_1, image_2 = segment_pcbs(image_path+image_name+"."+extension, results_path)
 
+    load_yolo_time = datetime.now()
+    print("Segment time =", load_yolo_time-segment_time)
     yolo = Load_Yolo_model()
 
     bboxes = {}
     images = {}
 
     def align_and_detect(index, image):
+        aling_time = datetime.now()
+        print("Load yolo time "+index+" =", aling_time-load_yolo_time)
         pcb = pcb_final_cut(image, None)
+
         images[index] = pcb
+
+        detect_time = datetime.now()
+        print("Align time "+index+" =", detect_time-aling_time)
+        print("Detect start "+index+" =", detect_time)
         bboxes[index] = detect_image(yolo, pcb, input_size=YOLO_INPUT_SIZE, CLASSES=TRAIN_CLASSES)
 
     # print("Split")
@@ -56,17 +70,19 @@ def main():
     thread_2 = Thread(target=align_and_detect,args=['2', image_2])
 
     thread_1.start()
-    # print("Start thread 1")
+    print("Start thread 1")
     thread_2.start()
-    # print("Start thread 2")
+    print("Start thread 2")
 
     thread_1.join()
-    # print("Join thread 1")
+    print("Join thread 1")
     thread_2.join()
-    # print("Join thread 2")
+    print("Join thread 2")
 
-    # print("Continue")
+    print("Continue")
 
+    write_time = datetime.now()
+    print("Detect end =", write_time)
     for index in range(1, 3):
         txt = open(results_path+image_name+"_detection_"+str(index)+".txt", "w")
 
@@ -95,5 +111,7 @@ def main():
         txt.close()
         index += 1
 
+    end_time = datetime.now()
+    print("Write time =", end_time-write_time)
 
 main()
