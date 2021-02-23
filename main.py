@@ -29,8 +29,8 @@ def main():
     begin = datetime.now()
     print("Started =", begin)
 
-    image_path = "/home/pi/image/"
-    results_path = "/home/pi/results/"
+    image_path = "/home/jacq/Documentos/datasets/C920/"
+    results_path = "/home/jacq/"
     checkpoints_path = "checkpoints/yolov3_custom_Tiny"
 
     images = list_files(image_path)
@@ -48,28 +48,28 @@ def main():
     print("Make dir time =", segment_time-begin)
     image_1, image_2 = segment_pcbs(image_path+image_name+"."+extension, results_path)
 
-    # create_yolo_time = datetime.now()
-    # print("Segment time =", create_yolo_time-segment_time)
-    # yolo_1 = Create_Yolo(input_size=416, CLASSES="tools/labels.txt")
+    create_yolo_time = datetime.now()
+    print("Segment time =", create_yolo_time-segment_time)
+    yolo = Create_Yolo(input_size=416, CLASSES="tools/labels.txt")
 
-    # load_weights_time = datetime.now()
-    # print("Create yolo time =", load_weights_time-create_yolo_time)
-    # yolo_1.load_weights(checkpoints_path)
+    load_weights_time = datetime.now()
+    print("Create yolo time =", load_weights_time-create_yolo_time)
+    yolo.load_weights(checkpoints_path)
 
     # load_yolo_time = datetime.now()
     # print("Load weights time =", load_yolo_time-load_weights_time)
     # yolo_2 = tf.keras.models.load_model('save/yolov3', compile=False)
 
-    load_yolo_time_h5 = datetime.now()
-    print("Load model yolo time =", load_yolo_time_h5-segment_time)
-    yolo = tf.keras.models.load_model('save/yolov3.h5', compile=False)
+    # load_yolo_time_h5 = datetime.now()
+    # print("Load model yolo time =", load_yolo_time_h5-segment_time)
+    # yolo = tf.keras.models.load_model('save/yolov3.h5', compile=False)
 
     bboxes = {}
     images = {}
 
     def align_and_detect(index, image):
         aling_time = datetime.now()
-        print("Load model yolo h5 time "+index+" =", aling_time-load_yolo_time_h5)
+        print("Load model yolo h5 time "+index+" =", aling_time-load_weights_time)
         pcb = pcb_final_cut(image, None)
 
         images[index] = pcb
