@@ -3,8 +3,9 @@ os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 import cv2
 import numpy as np
 import tensorflow as tf
-from yolov3.utils import detect_image, Load_Yolo_model
+from yolov3.utils import detect_image
 from yolov3.configs import *
+from yolov3.yolov4 import Create_Yolo
 from segmentation.pcbs_perspective import * 
 from segmentation.segment_pcbs import *
 from threading import Thread
@@ -30,6 +31,7 @@ def main():
 
     image_path = "/home/pi/image/"
     results_path = "/home/pi/results/"
+    checkpoints_path = "checkpoints/yolov3_custom_Tiny"
 
     images = list_files(image_path)
     image_name = images[0].split(".")[0]
@@ -46,16 +48,28 @@ def main():
     print("Make dir time =", segment_time-begin)
     image_1, image_2 = segment_pcbs(image_path+image_name+"."+extension, results_path)
 
-    load_yolo_time = datetime.now()
-    print("Segment time =", load_yolo_time-segment_time)
-    yolo = Load_Yolo_model()
+    # create_yolo_time = datetime.now()
+    # print("Segment time =", create_yolo_time-segment_time)
+    # yolo_1 = Create_Yolo(input_size=416, CLASSES="tools/labels.txt")
+
+    # load_weights_time = datetime.now()
+    # print("Create yolo time =", load_weights_time-create_yolo_time)
+    # yolo_1.load_weights(checkpoints_path)
+
+    # load_yolo_time = datetime.now()
+    # print("Load weights time =", load_yolo_time-load_weights_time)
+    # yolo_2 = tf.keras.models.load_model('save/yolov3', compile=False)
+
+    load_yolo_time_h5 = datetime.now()
+    print("Load model yolo time =", load_yolo_time_h5-segment_time)
+    yolo = tf.keras.models.load_model('save/yolov3.h5', compile=False)
 
     bboxes = {}
     images = {}
 
     def align_and_detect(index, image):
         aling_time = datetime.now()
-        print("Load yolo time "+index+" =", aling_time-load_yolo_time)
+        print("Load model yolo h5 time "+index+" =", aling_time-load_yolo_time_h5)
         pcb = pcb_final_cut(image, None)
 
         images[index] = pcb
