@@ -29,8 +29,8 @@ def main():
     begin = datetime.now()
     print("Started =", begin)
 
-    image_path = "/home/jacq/Documentos/datasets/C920/"
-    results_path = "/home/jacq/"
+    image_path = "/home/pi/image/"
+    results_path = "/home/pi/results/"
     checkpoints_path = "checkpoints/yolov3_custom_Tiny"
 
     images = list_files(image_path)
